@@ -16,9 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 // 系统功能测试类
@@ -97,9 +99,19 @@ class SystemFunctionTest {
     void testResourceHandlerConfiguration() {
         assertNotNull(webConfig);
 
-        // 验证资源处理器注册方法可以正常调用，不会抛出异常
+        // 创建模拟的 ResourceHandlerRegistry
         ResourceHandlerRegistry resourceHandlerRegistry = mock(ResourceHandlerRegistry.class);
+        ResourceHandlerRegistration resourceHandlerRegistration = mock(ResourceHandlerRegistration.class);
+
+        // 配置 mock 行为：当调用 addResourceHandler 时返回模拟的 ResourceHandlerRegistration
+        when(resourceHandlerRegistry.addResourceHandler(any(String[].class))).thenReturn(resourceHandlerRegistration);
+        when(resourceHandlerRegistration.addResourceLocations(any(String[].class))).thenReturn(resourceHandlerRegistration);
+
+        // 验证资源处理器注册方法可以正常调用，不会抛出异常
         assertDoesNotThrow(() -> webConfig.addResourceHandlers(resourceHandlerRegistry));
+
+        // 验证 addResourceHandler 方法被调用
+        verify(resourceHandlerRegistry, times(1)).addResourceHandler(any(String[].class));
     }
 
     // 测试全局异常处理器存在
