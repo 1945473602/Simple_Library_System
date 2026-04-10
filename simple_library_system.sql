@@ -121,10 +121,10 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES (1, 'admin', 'admin', 1);
+INSERT INTO `user` VALUES (1, 'admin', 'admin1', 1);
 INSERT INTO `user` VALUES (2, '李明', '123456', 0);
-INSERT INTO `user` VALUES (11, 'yaoming', '123', 0);
-INSERT INTO `user` VALUES (13, 'liudehua', 'abc', 1);
+INSERT INTO `user` VALUES (11, 'yaoming', '123456', 0);
+INSERT INTO `user` VALUES (13, 'liudehua', 'abcdef', 1);
 INSERT INTO `user` VALUES (14, 'wangpeng', '123456', 0);
 
 SET FOREIGN_KEY_CHECKS = 1;
