@@ -2,9 +2,11 @@ package edu.cupk.simple_library_system.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
 
+@JsonSerialize(using = PageResponseSerializer.class)
 public class PageResponse<T> {
     private int code;
 
@@ -17,7 +19,6 @@ public class PageResponse<T> {
     private List<T> data;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    @JsonProperty("data")
     private String singleData;
 
     public PageResponse() {
@@ -30,7 +31,14 @@ public class PageResponse<T> {
         this.data = data;
     }
 
-    private PageResponse(int code, String message, long count, String singleData) {
+    private PageResponse(int code, String message, Long count, List<T> data) {
+        this.code = code;
+        this.message = message;
+        this.count = count;
+        this.data = data;
+    }
+
+    private PageResponse(int code, String message, Long count, String singleData) {
         this.code = code;
         this.message = message;
         this.count = count;
@@ -71,11 +79,11 @@ public class PageResponse<T> {
         this.message = message;
     }
 
-    public long getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(long count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
