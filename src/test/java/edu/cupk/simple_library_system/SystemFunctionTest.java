@@ -107,36 +107,6 @@ class SystemFunctionTest {
     }
 
     @Test
-    void testUserCountStatistics() {
-        when(userRepository.count()).thenReturn(100L);
-
-        long count = userController.getCount();
-
-        assertEquals(100L, count, "用户统计数量必须是100");
-        verify(userRepository, times(1)).count();
-    }
-
-    @Test
-    void testBookCountStatistics() {
-        when(bookInfoRepository.count()).thenReturn(500L);
-
-        long count = bookInfoController.getCount();
-
-        assertEquals(500L, count, "图书统计数量必须是500");
-        verify(bookInfoRepository, times(1)).count();
-    }
-
-    @Test
-    void testBorrowCountStatistics() {
-        when(borrowRepository.count()).thenReturn(200L);
-
-        long count = borrowController.getCount();
-
-        assertEquals(200L, count, "借阅统计数量必须是200");
-        verify(borrowRepository, times(1)).count();
-    }
-
-    @Test
     void testComprehensiveStatistics() {
         when(userRepository.count()).thenReturn(50L);
         when(bookInfoRepository.count()).thenReturn(300L);
@@ -189,11 +159,6 @@ class SystemFunctionTest {
         assertEquals(0, response.getCode(), "空数据分页响应代码必须是0");
         assertEquals(0L, response.getCount(), "空数据分页响应总数必须是0");
         assertTrue(response.getData().isEmpty(), "空数据分页响应数据列表必须为空");
-    }
-
-    @Test
-    void testApplicationContextLoads() {
-        assertTrue(true, "应用上下文加载测试必须通过");
     }
 
     @Test

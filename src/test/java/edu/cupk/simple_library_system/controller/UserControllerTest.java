@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -130,7 +131,7 @@ class UserControllerTest {
         when(userRepository.existsByUserName("newuser")).thenReturn(false);
         when(userRepository.save(any(User.class))).thenReturn(testUser);
 
-        Integer result = userController.register("newuser", "password");
+        Integer result = userController.register(Map.of("username", "newuser", "password", "password"));
 
         assertEquals(1, result, "注册成功必须返回1");
     }
@@ -139,9 +140,23 @@ class UserControllerTest {
     void testRegister_UserNameExists() {
         when(userRepository.existsByUserName("testuser")).thenReturn(true);
 
-        Integer result = userController.register("testuser", "password");
+        Integer result = userController.register(Map.of("username", "testuser", "password", "password"));
 
         assertEquals(0, result, "用户名已存在必须返回0");
+    }
+
+    @Test
+    void testRegister_NullUsername() {
+        Integer result = userController.register(Map.of("password", "password"));
+
+        assertEquals(0, result, "用户名为null必须返回0");
+    }
+
+    @Test
+    void testRegister_NullPassword() {
+        Integer result = userController.register(Map.of("username", "newuser"));
+
+        assertEquals(0, result, "密码为null必须返回0");
     }
 
     @Test
@@ -186,6 +201,35 @@ class UserControllerTest {
         Integer result = userController.alterPassword(request);
 
         assertEquals(0, result, "凭据无效修改密码必须返回0");
+    }
+
+    @Test
+    void testReaderAlterPassword_Success() {
+        AlterPasswordRequest request = new AlterPasswordRequest();
+        request.setUserId(1);
+        request.setUserName("testuser");
+        request.setIsAdmin((byte) 0);
+        request.setOldPassword("password");
+        request.setNewPassword("newpassword");
+
+        when(userRepository.findById(1)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        Integer result = userController.readerAlterPassword(request);
+
+        assertEquals(1, result, "读者修改密码成功必须返回1");
+    }
+
+    @Test
+    void testReaderAlterPassword_UserNotFound() {
+        AlterPasswordRequest request = new AlterPasswordRequest();
+        request.setUserId(999);
+
+        when(userRepository.findById(999)).thenReturn(Optional.empty());
+
+        Integer result = userController.readerAlterPassword(request);
+
+        assertEquals(0, result, "读者修改密码用户不存在必须返回0");
     }
 
     @Test

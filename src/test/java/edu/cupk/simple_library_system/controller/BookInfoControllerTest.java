@@ -190,6 +190,20 @@ class BookInfoControllerTest {
     }
 
     @Test
+    void testAddBookInfo_IsBorrowedDefaultToZero() {
+        BookInfo newBook = new BookInfo();
+        newBook.setBookName("Spring实战");
+        newBook.setBookAuthor("Craig Walls");
+
+        when(bookInfoRepository.save(any(BookInfo.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Integer result = bookInfoController.addBookInfo(newBook);
+
+        assertEquals(1, result, "添加图书成功必须返回1");
+        assertEquals((byte) 0, newBook.getIsBorrowed(), "isBorrowed为null时必须默认设为0");
+    }
+
+    @Test
     void testDeleteBookInfo_Success() {
         BookInfo bookToDelete = new BookInfo();
         bookToDelete.setBookId(1);

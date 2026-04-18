@@ -276,11 +276,12 @@ class BorrowControllerTest {
         newBorrow.setUserId(1);
         newBorrow.setBookId(1);
 
-        when(borrowRepository.save(any(Borrow.class))).thenReturn(newBorrow);
+        when(borrowRepository.save(any(Borrow.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Integer result = borrowController.addBorrow(newBorrow);
 
         assertEquals(1, result, "添加借阅记录成功时返回结果必须是1");
+        assertNotNull(newBorrow.getBorrowTime(), "borrowTime为null时必须自动填充当前时间");
         verify(borrowRepository, times(1)).save(any(Borrow.class));
     }
 
