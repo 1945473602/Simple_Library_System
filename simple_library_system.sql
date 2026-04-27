@@ -127,4 +127,37 @@ INSERT INTO `user` VALUES (11, 'yaoming', '123456', 0);
 INSERT INTO `user` VALUES (13, 'liudehua', 'abcdef', 1);
 INSERT INTO `user` VALUES (14, 'wangpeng', '123456', 0);
 
+-- ----------------------------
+-- Table structure for book_donation
+-- ----------------------------
+DROP TABLE IF EXISTS `book_donation`;
+CREATE TABLE `book_donation`  (
+                                  `donationId` int(11) NOT NULL AUTO_INCREMENT,
+                                  `donorName` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '捐赠人姓名',
+                                  `donorPhone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '联系电话',
+                                  `donorEmail` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '电子邮箱',
+                                  `bookIsbn` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '图书ISBN',
+                                  `bookName` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '书名',
+                                  `bookAuthor` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者',
+                                  `bookPublisher` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '出版社',
+                                  `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '0=待处理, 1=待接收, 2=已入库',
+                                  `applyTime` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '申请时间',
+                                  `contactTime` datetime NULL DEFAULT NULL COMMENT '联系时间',
+                                  `receiveTime` datetime NULL DEFAULT NULL COMMENT '接收入库时间',
+                                  `donorRemark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '捐赠人备注',
+                                  `staffRemark` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '工作人员备注',
+                                  PRIMARY KEY (`donationId`) USING BTREE,
+                                  INDEX `idx_donor_phone`(`donorPhone`) USING BTREE,
+                                  INDEX `idx_status`(`status`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '图书捐赠申请表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of book_donation
+-- ----------------------------
+INSERT INTO `book_donation` VALUES (1, '张三', '13800138001', 'zhangsan@example.com', '9787111213826', 'Java编程思想', 'Bruce Eckel', '机械工业出版社', 0, '2026-04-20 10:30:00', NULL, NULL, '九成新，无破损', NULL);
+INSERT INTO `book_donation` VALUES (2, '李四', '13800138002', NULL, '9787115428028', 'Python编程：从入门到实践', 'Eric Matthes', '人民邮电出版社', 1, '2026-04-21 14:20:00', '2026-04-22 09:15:00', NULL, '全新未拆封', '已联系，约定周三下午来馆捐赠');
+INSERT INTO `book_donation` VALUES (3, '王五', '13800138003', 'wangwu@qq.com', '9787508385556', '围城', '钱钟书', '人民文学出版社', 2, '2026-04-19 16:45:00', '2026-04-20 10:00:00', '2026-04-23 15:30:00', '八成新', '已入库，感谢捐赠');
+INSERT INTO `book_donation` VALUES (4, '赵六', '13800138004', NULL, '9787020002207', '平凡的世界', '路遥', '人民文学出版社', 0, '2026-04-25 09:10:00', NULL, NULL, '七成新，有少量笔记', NULL);
+INSERT INTO `book_donation` VALUES (5, '孙七', '13800138005', 'sunqi@163.com', '9787544270878', '解忧杂货店', '东野圭吾', '南海出版公司', 1, '2026-04-24 11:25:00', '2026-04-25 14:00:00', NULL, NULL, '已联系，等待捐赠人确认时间');
+
 SET FOREIGN_KEY_CHECKS = 1;

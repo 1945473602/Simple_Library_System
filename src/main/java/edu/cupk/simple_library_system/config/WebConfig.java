@@ -13,19 +13,24 @@ import java.nio.file.Paths;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
+    private final AdminInterceptor adminInterceptor;
 
     @Value("${app.upload-dir:uploads}")
     private String uploadDir;
 
-    public WebConfig(AuthInterceptor authInterceptor) {
+    public WebConfig(AuthInterceptor authInterceptor, AdminInterceptor adminInterceptor) {
         this.authInterceptor = authInterceptor;
+        this.adminInterceptor = adminInterceptor;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/user/**", "/bookType/**", "/bookInfo/**", "/borrow/**")
+                .addPathPatterns("/user/**", "/bookType/**", "/bookInfo/**", "/borrow/**", "/donation/**", "/admin/**")
                 .excludePathPatterns("/user/login", "/user/register");
+
+        registry.addInterceptor(adminInterceptor)
+                .addPathPatterns("/admin/**");
     }
 
     @Override
